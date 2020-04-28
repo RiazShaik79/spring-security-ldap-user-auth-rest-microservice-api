@@ -1,6 +1,7 @@
 package io.javabrains;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -56,11 +57,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			
 				try {
 			//	UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(jwtUtil.extractUsername(jwt),usernamePasswordAuthenticationToken);
-				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(person.getUid(),person.getUserPassword());
+				UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(person.getUid(), null, new ArrayList<>());
 				System.out.println(person.getFullName() + " " + person.getLastName() + " " + person.getUserPassword());
 				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-				filterChain.doFilter(request, response);
+				
 			}
 			
 			catch (Exception e) {
