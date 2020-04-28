@@ -56,27 +56,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
-		http.addFilterBefore(jwtRequestFilter,UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		
 	}
 	
-	 @Autowired
-	 //private JwtAuthenticationEntryPoint unauthorizedHandler;
-
-
 	    @Bean(BeanIds.AUTHENTICATION_MANAGER)
 	    @Override
 	    public AuthenticationManager authenticationManagerBean() throws Exception {
 	        return super.authenticationManagerBean();
 	    }
 
-
-	   /* @Bean
-	    public DefaultSpringSecurityContextSource contextSource() {
-	        return  new DefaultSpringSecurityContextSource(
-	                Collections.singletonList("ldap://localhost:12345"), "dc=innovativeintelli,dc=com");
-	    } */
-	
 	 @Bean
 	 public PasswordEncoder passwordEncoder() {
 		 return NoOpPasswordEncoder.getInstance();

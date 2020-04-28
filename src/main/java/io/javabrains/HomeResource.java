@@ -27,6 +27,8 @@ public class HomeResource {
 	@Autowired
 	private jwtUtil jwtTokenUtil;
 	
+	//private User user;
+	
 	@RequestMapping("/")
 	public String index() {
 		return "Home Page";
@@ -46,6 +48,7 @@ public class HomeResource {
 		
 				new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
 				);
+ 
 		} 		catch(BadCredentialsException e) {
 			throw new Exception("Incorrect username or password", e);
 		}

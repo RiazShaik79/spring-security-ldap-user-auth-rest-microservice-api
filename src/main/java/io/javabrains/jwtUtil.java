@@ -1,6 +1,6 @@
 package io.javabrains;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -17,11 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 //import com.innovativeintelli.ldapauthenticationjwttoken.security.JwtTokenProvider;
 
-@Service
+@Component
 public class jwtUtil {
 	
 	private static final String SECRET_KEY = "secret";
@@ -34,56 +34,33 @@ public class jwtUtil {
     private int jwtExpirationInMs;
 	
 	public String extractUsername(String token) {
-		return extractClaim(token, Claims::getSubject);
-	}
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
 
-	public java.util.Date extractExpiration(String token) {
-		return extractClaim(token, Claims::getExpiration);
-	}
-	
-	public <T> T extractClaim(String token, Function<Claims, T> ClaimsResolver) {
-		final Claims claims = extractAllClaims(token);
-		return ClaimsResolver.apply(claims);
-	}
-	
-	private Claims extractAllClaims(String token) {
-		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
-	}
-	
-	private Boolean isTokenExpired(String token) {
-		return extractExpiration(token).before(new Date(0));
+        return claims.getSubject();
 	}
 	
 	public String generateToken(Authentication authentication) {
-		//Map<String, Object> Claims = new HashMap<>();
-		//return CreateToken(Claims, userDetails.getUsername());
-		
-		LdapUserDetailsImpl userPrincipal = (LdapUserDetailsImpl) authentication.getPrincipal();
-
-        Date now = new Date(0);
+    	LdapUserDetailsImpl userPrincipal = (LdapUserDetailsImpl) authentication.getPrincipal();
+    	
+        Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
-        System.out.println("expirty date : " + expiryDate); 
+        System.out.println(now + " " + expiryDate + " " + userPrincipal.getUsername() + " " + jwtSecret + " " + authentication.getCredentials());
         
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
-                .setIssuedAt(new Date(jwtExpirationInMs))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
 	}
 	
-	/*private String CreateToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-				.signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
-	}*/
-	
 	public Boolean ValidateToken(String authToken) {
-		//final String username = extractUsername(token) ;
-		//return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
-		
+	
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(authToken);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
             return true;
         } catch (SignatureException ex) {
             logger.error("Invalid JWT signature");
@@ -96,6 +73,8 @@ public class jwtUtil {
         } catch (IllegalArgumentException ex) {
             logger.error("JWT claims string is empty.");
         }
-        return false;
+        System.out.println("Some Issue");
+               return false;
 	}
+	
 }
