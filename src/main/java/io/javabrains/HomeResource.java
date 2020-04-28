@@ -1,5 +1,8 @@
 package io.javabrains;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +28,9 @@ public class HomeResource {
 	
 	@Autowired
 	private MyUserDetailsService userDetailsService;
+	
+	@Autowired
+	private UserService UserService;
 	
 	@Autowired
 	private jwtUtil jwtTokenUtil;
@@ -58,6 +66,31 @@ public class HomeResource {
 		final String Jwt = jwtTokenUtil.generateToken(authentication);
 		
 		return ResponseEntity.ok(new AuthenticationResponse(Jwt));
+	}
+	
+	@RequestMapping("/users")
+	public List<User> getAllUsers() {
+		return UserService.getAllUsers();
+	}
+
+	@RequestMapping("/user/{Id}")
+	public  Optional<User> getUser(@PathVariable int Id) {
+		return UserService.getUser(Id);
+	}
+	
+	@RequestMapping(method=RequestMethod.POST, value="/Users")
+	public void addUser(@RequestBody User User) {
+		UserService.addUser(User);
+	}
+	
+	@RequestMapping(method=RequestMethod.PUT, value="/Users/{Id}")
+	public void updateUser(@RequestBody User User, @PathVariable int Id) {
+		UserService.updateUser(User, Id );
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE, value="/Users/{Id}")
+	public void deleteUser(@PathVariable int Id) {
+		UserService.deleteUser(Id);
 	}
 
 }
