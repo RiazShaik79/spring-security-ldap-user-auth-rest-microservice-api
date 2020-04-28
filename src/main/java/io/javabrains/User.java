@@ -27,7 +27,7 @@ public class User {
 	}
 
 	public String getUserName() {
-		System.out.println("UserName "+ userName);
+		
 		return userName;
 		
 	}
