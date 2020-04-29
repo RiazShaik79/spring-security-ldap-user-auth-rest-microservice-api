@@ -52,7 +52,9 @@ public class HomeResource {
 				);
  
 		} 		catch(BadCredentialsException e) {
+			System.out.println("error : " + e);
 			throw new Exception("Incorrect username or password", e);
+			
 		}
 		
 		//final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
