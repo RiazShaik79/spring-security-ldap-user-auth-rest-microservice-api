@@ -24,25 +24,11 @@ public class HomeResource {
 	private  AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private UserService UserService;
-	
-	@Autowired
 	private jwtUtil jwtTokenUtil;
-	
-	//private User user;
-	
-	@RequestMapping("/")
-	public String index() {
-		return "Home Page";
-	}
-	
-	@RequestMapping("/hello")
-	public String hello() {
-		return "Hello World!..";
-	}
 	
 	@RequestMapping(value="/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+		
 		
 		Authentication authentication;
 		try{
@@ -57,36 +43,7 @@ public class HomeResource {
 			
 		}
 		
-		//final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-		
-		final String Jwt = jwtTokenUtil.generateToken(authentication);
-		
-		return ResponseEntity.ok(new AuthenticationResponse(Jwt));
+		return ResponseEntity.ok("Authorized");
 	}
 	
-	@RequestMapping("/users")
-	public List<User> getAllUsers() {
-		return UserService.getAllUsers();
-	}
-
-	@RequestMapping("/user/{Id}")
-	public  Optional<User> getUser(@PathVariable int Id) {
-		return UserService.getUser(Id);
-	}
-	
-	@RequestMapping(method=RequestMethod.POST, value="/Users")
-	public void addUser(@RequestBody User User) {
-		UserService.addUser(User);
-	}
-	
-	@RequestMapping(method=RequestMethod.PUT, value="/Users/{Id}")
-	public void updateUser(@RequestBody User User, @PathVariable int Id) {
-		UserService.updateUser(User, Id );
-	}
-	
-	@RequestMapping(method=RequestMethod.DELETE, value="/Users/{Id}")
-	public void deleteUser(@PathVariable int Id) {
-		UserService.deleteUser(Id);
-	}
-
 }
