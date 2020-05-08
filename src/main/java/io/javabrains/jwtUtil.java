@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 //import com.innovativeintelli.ldapauthenticationjwttoken.security.JwtTokenProvider;
 
 @Component
-@RefreshScope
+//@RefreshScope
 public class jwtUtil {
 	
 	private static final String SECRET_KEY = "secret";

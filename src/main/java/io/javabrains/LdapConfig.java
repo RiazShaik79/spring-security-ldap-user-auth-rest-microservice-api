@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.ldap.core.support.BaseLdapPathBeanPostProcessor;
 
 @Configuration
-@RefreshScope
+//@RefreshScope
 public class LdapConfig {
 
     @Value("${spring.ldap.embedded.base-dn}")

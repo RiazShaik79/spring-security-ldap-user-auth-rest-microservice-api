@@ -27,8 +27,9 @@ public class HomeResource {
 	private jwtUtil jwtTokenUtil;
 	
 	@RequestMapping(value="/authenticate", method = RequestMethod.POST)
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+	public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 		
+		AuthenticationResponse response = new AuthenticationResponse() ;
 		
 		Authentication authentication;
 		try{
@@ -39,11 +40,13 @@ public class HomeResource {
  
 		} 		catch(BadCredentialsException e) {
 			System.out.println("error : " + e);
-			throw new Exception("Incorrect username or password", e);
+			response.setAuthStatus("Not Authorized");
+			return response;
+		//	throw new Exception("Incorrect username or password", e);
 			
 		}
-		
-		return ResponseEntity.ok("Authorized");
+		response.setAuthStatus("Authorized");
+		return response;
 	}
 	
 }
