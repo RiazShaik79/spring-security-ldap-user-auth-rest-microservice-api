@@ -1,5 +1,6 @@
 package io.javabrains;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -11,6 +12,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Bean;
+
+import com.netflix.discovery.DiscoveryClient;
+import com.netflix.discovery.shared.transport.jersey.EurekaJerseyClientImpl.EurekaJerseyClientBuilder;
 
 @SpringBootApplication
 @EntityScan
@@ -25,6 +30,22 @@ public class SpringSecurityLdapApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringSecurityLdapApplication.class, args);
 	}
+	
+	 @Bean
+		public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
+		    DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
+		    System.setProperty("javax.net.ssl.keyStore", "src/main/resources/user-auth-cert.jks");
+		    System.setProperty("javax.net.ssl.keyStorePassword", "India330$$");
+		    System.setProperty("javax.net.ssl.trustStore", "src/main/resources/user-auth-cert.jks");
+		    System.setProperty("javax.net.ssl.trustStorePassword", "India330$$");
+		    EurekaJerseyClientBuilder builder = new EurekaJerseyClientBuilder();
+		    builder.withClientName("user-auth-cert");
+		    builder.withSystemSSLConfiguration();
+		    builder.withMaxTotalConnections(10);
+		    builder.withMaxConnectionsPerHost(10);
+		    args.setEurekaJerseyClient(builder.build());
+		    return args;
+		} 
 	
 	@PostConstruct
     public void setup(){
