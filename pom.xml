@@ -13,10 +13,12 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-security-ldap</name>
 	<description>Demo project for Spring Boot</description>
+	<packaging>war</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+		
 	</properties>
 
 	<dependencies>
@@ -28,7 +30,25 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
+  		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+		</dependency>	
+		<dependency>
+		    <groupId>org.springframework.security.oauth.boot</groupId>
+		    <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+		    <version>2.0.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<dependency>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-starter-tomcat</artifactId>
+  			<scope>provided</scope>
+  		</dependency>
 		<dependency>
 			<groupId>com.unboundid</groupId>
 			<artifactId>unboundid-ldapsdk</artifactId>
@@ -38,7 +58,15 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-ldap</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-sleuth</artifactId>
+		</dependency>
+		<dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-zipkin</artifactId>
+  	 </dependency>
+	
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
@@ -57,8 +85,7 @@
 		<dependency>
     		<groupId>org.apache.httpcomponents</groupId>
     		<artifactId>httpclient</artifactId>
-		</dependency>	
-
+		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
@@ -68,12 +95,6 @@
 			<groupId>org.springframework.ldap</groupId>
 			<artifactId>spring-ldap-core</artifactId>
 		</dependency>	
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -85,7 +106,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
@@ -104,7 +125,7 @@
 					<version>${spring-cloud.version}</version>
 					<type>pom</type>
 					<scope>import</scope>					
-			</dependency>		
+			</dependency>
 		</dependencies>
 		</dependencyManagement>
 

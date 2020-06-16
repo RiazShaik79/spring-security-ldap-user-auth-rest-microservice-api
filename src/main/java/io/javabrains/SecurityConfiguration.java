@@ -15,10 +15,12 @@ import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //import com.innovativeintelli.ldapauthenticationjwttoken.security.JwtAuthenticationEntryPoint;
 
+@EnableResourceServer
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
